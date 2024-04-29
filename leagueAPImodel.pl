@@ -6,13 +6,14 @@ use HTML::TreeBuilder;
 use Encode qw(decode_utf8);
 use JSON;
 
-my $ua = LWP::UserAgent->new;
+my $baseUrl = "https://nwcounties.leaguemaster.co.uk/cgi-county/icounty.exe/";
+my $ua      = LWP::UserAgent->new;
 $ua->agent("League Scraper");
 
-sub fetchAllClubsAndIds {
+sub getPageTree {
+    my $page = shift;
 
-    my $url =
-"https://nwcounties.leaguemaster.co.uk/cgi-county/icounty.exe/showclublist";
+    my $url     = $baseUrl . $page;
     my $root    = HTML::TreeBuilder->new();
     my $request = $ua->get($url) or die "Cannot contact LeagueMaster $!\n";
 
@@ -23,11 +24,15 @@ sub fetchAllClubsAndIds {
         print "Cannot fetch the resource.\n"
           ;    ## Fix me. Sort out an error handling scheme..
     }
+    return $root;
+}
+
+sub fetchAllClubsAndIds {
 
     my @clubsdata = ();
-
+    my $page      = getPageTree("showclublist");
     foreach my $data (
-        $root->look_down(
+        $page->look_down(
             _tag  => "td",
             class => "boxleft",
         )
@@ -58,7 +63,22 @@ sub fetchAllClubsAndIds {
 }
 
 sub fetchClubInfo {
-    my $id = shift;
-    return { "club_id" => $id };
+    my $id     = shift;
+    my $page   = getPageTree("showclub?clubid=$id&st=1");
+    my @fields = ();
+
+    foreach my $data (
+        $page->look_down(
+            _tag  => "tr",
+            class => qr{^(?:firstRow|secondRow)}
+        )
+      )
+    {
+        my $fieldName = $data->as_text;
+        my %fieldData = ( "fields" => $fieldName );
+        push @fields, \%fieldData;
+    }
+
+    return \@fields;
 }
 1;
