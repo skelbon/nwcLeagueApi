@@ -1,0 +1,8 @@
++ Task One
+
+Build the HTML tree and traverse to obtain all the club names and ids
+
+- The club names are simpler than the ids
+- ids must be parsed from the <href> urls - try using regex in a perly way.
+
+
