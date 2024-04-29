@@ -65,20 +65,25 @@ sub fetchAllClubsAndIds {
 sub fetchClubInfo {
     my $id     = shift;
     my $page   = getPageTree("showclub?clubid=$id&st=1");
-    my @fields = ();
+    my %fields = ();
 
     foreach my $data (
         $page->look_down(
             _tag  => "tr",
-            class => qr{^(?:firstRow|secondRow)}
+            class => qr{^(firstRow|secondRow)}
         )
       )
     {
-        my $fieldName = $data->as_text;
-        my %fieldData = ( "fields" => $fieldName );
-        push @fields, \%fieldData;
+        my $k = $data->look_down( _tag => "th" )->as_text =~ s/://r;
+        my $v = $data->look_down( _tag => "td" )->as_text;
+        if ( $k =~ /Fixtures/ ) { last }
+        if ( $v eq 'Map link' ) {
+            $v = $data->look_down( _tag => "a" )->attr('href');
+        }
+        my %tableHash = ( $k => $v );
+        $fields{$k} = $v;
     }
 
-    return \@fields;
+    return \%fields;
 }
 1;
