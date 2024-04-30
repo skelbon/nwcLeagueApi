@@ -29,7 +29,7 @@ sub getPageTree {
 
 sub fetchAllClubsAndIds {
 
-    my @clubsdata = ();
+    my %clubsdata = ();
     my $page      = getPageTree("showclublist");
     foreach my $data (
         $page->look_down(
@@ -52,13 +52,13 @@ sub fetchAllClubsAndIds {
             $clubid = $1;
         }
 
-        my %clubdata = ( "$clubname" => "$clubid" );
+        # my %clubdata = ( "$clubname" => "$clubid" );
 
-        push @clubsdata, \%clubdata;
+        @clubsdata{$clubname} = $clubid;
 
     }
 
-    return \@clubsdata;
+    return \%clubsdata;
 
 }
 
