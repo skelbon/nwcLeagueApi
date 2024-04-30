@@ -108,7 +108,7 @@ sub getClubIdByName {
     my $name      = shift;
     my $clubsData = fetchAllClubsAndIds();
     my $clubId    = $clubsData->{$name};
-    return defined ? $clubId : 0;
+    return defined $clubId ? $clubId : 0;
 
 }
 1;
