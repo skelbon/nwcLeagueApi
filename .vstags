@@ -6,6 +6,6 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 fetchAllClubsAndIds	leagueAPImodel.pl	31;"	s
 fetchClubInfo	leagueAPImodel.pl	66;"	s
-fetchTeamsByClub	leagueAPImodel.pl	91;"	s
-getClubIdByName	leagueAPImodel.pl	107;"	s
+fetchTeamsByClub	leagueAPImodel.pl	92;"	s
+getClubIdByName	leagueAPImodel.pl	108;"	s
 getPageTree	leagueAPImodel.pl	14;"	s

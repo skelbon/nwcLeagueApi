@@ -64,6 +64,7 @@ sub fetchAllClubsAndIds {
 }
 
 sub fetchClubInfo {
+    ## case id not found needs to be handled
     my $id     = shift;
     my $page   = getPageTree("showclub?clubid=$id&st=1");
     my %fields = ();
