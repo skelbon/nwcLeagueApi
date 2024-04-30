@@ -53,8 +53,6 @@ sub fetchAllClubsAndIds {
             $clubid = $1;
         }
 
-        # my %clubdata = ( "$clubname" => "$clubid" );
-
         @clubsdata{$clubname} = $clubid;
 
     }
@@ -64,7 +62,7 @@ sub fetchAllClubsAndIds {
 }
 
 sub fetchClubInfo {
-    ## case id not found needs to be handled
+    ## returns empty fields if id does not exist - and that's okay.
     my $id     = shift;
     my $page   = getPageTree("showclub?clubid=$id&st=1");
     my %fields = ();
@@ -89,19 +87,42 @@ sub fetchClubInfo {
     return \%fields;
 }
 
-sub fetchTeamsByClub {
+sub fetchTeamsByClubId {
     my $id   = shift;
     my $page = getPageTree("showclub?clubid=$id&st=1");
+    my $teams_td;
+    my %teams;
 
-    foreach my $data (
+    foreach my $table (
         $page->look_down(
-            _tag  => 'td',
-            class => 'boxleft'
+            _tag => 'table',
         )
       )
     {
-        ## TODO - collect the team names - we'll also a want to collect the division for each team.
+        $teams_td = $table->look_down( _tag => 'td', class => 'title' );
+        if ( $teams_td && $teams_td->as_text =~ /Teams/ ) {
+            $teams_td = $table;
+            last;
+        }
     }
+
+    foreach my $team_tr (
+        $teams_td->look_down(
+            _tag  => 'tr',
+            class => qr{^(firstRow|secondRow)}
+        )
+      )
+    {
+        my $teamName =
+          $team_tr->look_down( _tag => 'td', class => 'boxleft' )->as_text;
+
+        my $division =
+          $team_tr->look_down( _tag => 'td', class => 'boxmain' )->as_text;
+
+        $teams{$teamName} = $division;
+    }
+
+    return \%teams;
 
 }
 
