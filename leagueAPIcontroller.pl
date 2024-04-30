@@ -1,12 +1,12 @@
 use Mojolicious::Lite -signatures;
 require './leagueAPImodel.pl';
 
-get '/clublist' => sub ($c) {
+get '/api/clublist' => sub ($c) {
     my $clubs = fetchAllClubsAndIds();
     $c->render( json => $clubs );
 };
 
-get '/club' => sub ($c) {
+get '/api/club' => sub ($c) {
     my $id = $c->param('id');
     unless ($id) {
         return $c->render(

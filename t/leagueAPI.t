@@ -7,14 +7,14 @@ my $script = curfile->dirname->sibling('leagueAPIcontroller.pl');
 my $t = Test::Mojo->new($script);
 
 ## /clublist
-$t->get_ok('/clublist')->status_is(200)
+$t->get_ok('/api/clublist')->status_is(200)
   ->header_is( 'Content-Type' => 'application/json;charset=UTF-8' )->json_is(
     '/Moss Side' => 145,
     'Expect result to have Moss Side with correct clubid'
   );
 ## /club?id=...
-$t->get_ok('/club')->status_is(400);
-$t->get_ok('/club?id=145')->status_is(200)
+$t->get_ok('/api/club')->status_is(400);
+$t->get_ok('/api/club?id=145')->status_is(200)
   ->header_is( 'Content-Type' => 'application/json;charset=UTF-8' )
   ->json_has( '/Address',     'expecting an Address key' )
   ->json_has( '/Directions',  'expecting a Directions key' )
