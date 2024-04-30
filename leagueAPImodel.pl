@@ -5,6 +5,7 @@ use LWP::UserAgent;
 use HTML::TreeBuilder;
 use Encode qw(decode_utf8);
 use JSON;
+use Data::Dumper;
 
 my $baseUrl = "https://nwcounties.leaguemaster.co.uk/cgi-county/icounty.exe/";
 my $ua      = LWP::UserAgent->new;
@@ -85,5 +86,13 @@ sub fetchClubInfo {
     }
 
     return \%fields;
+}
+
+sub getClubIdByName {
+    my $name      = shift;
+    my $clubsData = fetchAllClubsAndIds();
+    my $clubId    = $clubsData->{$name};
+    return defined ? $clubId : 0;
+
 }
 1;
