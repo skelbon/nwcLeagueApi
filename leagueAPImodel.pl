@@ -88,6 +88,22 @@ sub fetchClubInfo {
     return \%fields;
 }
 
+sub fetchTeamsByClub {
+    my $id   = shift;
+    my $page = getPageTree("showclub?clubid=$id&st=1");
+
+    foreach my $data (
+        $page->look_down(
+            _tag  => 'td',
+            class => 'boxleft'
+        )
+      )
+    {
+        ## TODO - collect the team names - we'll also a want to collect the division for each team.
+    }
+
+}
+
 sub getClubIdByName {
     my $name      = shift;
     my $clubsData = fetchAllClubsAndIds();
