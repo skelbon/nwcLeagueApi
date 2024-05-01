@@ -40,7 +40,17 @@ $t->get_ok('/api/club?id=Moss Side')->status_is(200)
 $t->get_ok('/api/club?name=Bad Name')->status_is(404);
 ## /teams?name
 $t->get_ok('/api/teams?name=Bad Name')->status_is(404);
-$t->get_ok('/api/teams?name=Moss Side')->status_is(200);
+$t->get_ok('/api/teams?name=Moss Side')->status_is(200)
+  ->json_has( '/Moss Side 1',
+    'expecting a first team from any club in league' );
+
+## /teamslist
+$t->get_ok('/api/teamslist')->status_is(200)
+  ->header_is( 'Content-Type' => 'application/json;charset=UTF-8' )->json_is(
+    '/Moss Side 1' => 468,
+    'Expect result to have team Moss Side 1 with correct teamid'
+  );
+
 done_testing();
 
 1;

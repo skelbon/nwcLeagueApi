@@ -126,6 +126,39 @@ sub fetchTeamsByClubId {
 
 }
 
+sub fetchAllTeamsAndIds {
+
+    my %teamsdata = ();
+    my $page      = getPageTree("showteamlist");
+    foreach my $data (
+        $page->look_down(
+            _tag  => "td",
+            class => "boxleft",
+        )
+      )
+    {
+
+        # Last table entry is not required - let's bail.
+        if ( $data->look_down( _tag => 'em' ) ) { last }
+
+        my $teamname      = $data->as_text;
+        my $club_info_url = $data->look_down( _tag => "a" )->attr('href');
+
+        # Default clubid = 0 if url fails for some reason.
+        my $clubid = 0;
+
+        if ( $club_info_url =~ /teamid=(\d+)/ ) {
+            $clubid = $1;
+        }
+
+        @teamsdata{$teamname} = $clubid;
+
+    }
+
+    return \%teamsdata;
+
+}
+
 sub getClubIdByName {
     my $name      = shift;
     my $clubsData = fetchAllClubsAndIds();
