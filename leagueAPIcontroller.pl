@@ -93,5 +93,33 @@ get '/api/teaminfo' => sub ($c) {
     $c->render( json => $teaminfo );
 };
 
+get '/api/fixtures' => sub ($c) {
+
+    my $id   = $c->param('teamid');
+    my $name = $c->param('teamname');
+
+    unless ( $id || $name ) {
+        return $c->render(
+            json =>
+'400 Bad Request: Missing query parameter teamname or teamid required',
+            status => 400
+        );
+    }
+
+    if ( $name && !$id ) {
+        $id = getTeamIdByName($name);
+        unless ($id) {
+            return $c->render(
+                json   => "404 Not found: Team $name not found",
+                status => 404
+            );
+        }
+    }
+
+    my $fixtures = fetchFixturesByTeam($id);
+    $c->render( json => $fixtures );
+
+};
+
 app->start;
 

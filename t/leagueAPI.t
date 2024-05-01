@@ -70,9 +70,10 @@ $t->get_ok('/api/teaminfo?teamid=468')->status_is(200)->json_has('/Mobile')
   ->json_has('/Reserve Contact')->json_has('/Email')
   ->json_has('/Reserve Contact/Email')->json_has('/Email');
 
-## /clubfixtures - resond with team or club fixtures dependant on query params given.
-$t->get_ok('api/fixtures')->status_is(200)->json_has('/team')
-  ->json_has('/date')->json_has('/venue')->json_has('/opponent');
+## /clubfixtures - respond with team or club fixtures dependant on query params given.
+$t->get_ok('/api/fixtures?teamid=468')->status_is(200)
+  ->json_has('/fixtures/1/date')->json_has('/fixtures/1/venue')
+  ->json_has('/fixtures/1/opponent');
 
 done_testing();
 

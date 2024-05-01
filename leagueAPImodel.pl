@@ -189,6 +189,30 @@ sub fetchTeamInfo {
     return \%fields;
 }
 
+sub fetchFixturesByTeam {
+    my $teamid   = shift;
+    my $page     = getPageTree("showteamfixtures?teamid=$teamid");
+    my @fixtures = ();
+
+    foreach
+      my $dataRow ( $page->look_down( _tag => "tr", class => qr{DoneRow} ) )
+    {
+        my @v = ();
+        foreach my $data ( $dataRow->look_down( _tag => 'td' ) ) {
+            push @v, $data->as_text;
+        }
+
+        push @fixtures,
+          {
+            'date'     => $v[1],
+            'venue'    => $v[2],
+            'opponent' => $v[3]
+          };
+    }
+
+    return { "fixtures" => \@fixtures };
+}
+
 sub getClubIdByName {
     my $name      = shift;
     my $clubsData = fetchAllClubsAndIds();
