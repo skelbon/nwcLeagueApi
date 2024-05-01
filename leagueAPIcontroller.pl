@@ -2,15 +2,15 @@ use Mojolicious::Lite -signatures;
 require './leagueAPImodel.pl';
 
 # Returns a list of all clubs in the league
-get '/api/clublist' => sub ($c) {
+get '/api/clubslist' => sub ($c) {
     my $clubs = fetchAllClubsAndIds();
     $c->render( json => $clubs );
 };
 
 # Returns general club info, address, general email, website, google map etc
 get '/api/club' => sub ($c) {
-    my $id   = $c->param('id');
-    my $name = $c->param('name');
+    my $id   = $c->param('clubid');
+    my $name = $c->param('clubname');
 
     unless ( $id || $name ) {
         return $c->render(
@@ -36,8 +36,8 @@ get '/api/club' => sub ($c) {
 
 # Returns a list of teams for a given club id or name
 get '/api/teams' => sub ($c) {
-    my $id   = $c->param('id');
-    my $name = $c->param('name');
+    my $id   = $c->param('clubid');
+    my $name = $c->param('clubname');
 
     unless ( $id || $name ) {
         return $c->render(
