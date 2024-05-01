@@ -66,5 +66,32 @@ get 'api/teamslist' => sub ($c) {
     my $teams = fetchAllTeamsAndIds();
     $c->render( json => $teams );
 };
+
+get '/api/teaminfo' => sub ($c) {
+    my $id   = $c->param('teamid');
+    my $name = $c->param('teamname');
+
+    unless ( $id || $name ) {
+        return $c->render(
+            json =>
+'400 Bad Request: Missing query parameter teamname or teamid required',
+            status => 400
+        );
+    }
+
+    if ( $name && !$id ) {
+        $id = getTeamIdByName($name);
+        unless ($id) {
+            return $c->render(
+                json   => "404 Not found: Team $name not found",
+                status => 404
+            );
+        }
+    }
+
+    my $teaminfo = fetchTeamInfo($id);
+    $c->render( json => $teaminfo );
+};
+
 app->start;
 

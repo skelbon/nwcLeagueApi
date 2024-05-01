@@ -54,6 +54,9 @@ $t->get_ok('/api/teamslist')->status_is(200)
     '/Moss Side 1' => 468,
     'Expect result to have team Moss Side 1 with correct teamid'
   );
+## /teaminfo
+$t->get_ok('/api/teaminfo?teamid=468')->status_is(200);
+$t->get_ok('/api/teaminfo?teamname=Moss Side 1')->status_is(200);
 
 done_testing();
 

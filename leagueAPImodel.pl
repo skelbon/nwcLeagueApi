@@ -159,11 +159,45 @@ sub fetchAllTeamsAndIds {
 
 }
 
+sub fetchTeamInfo {
+    ## returns empty fields if id does not exist - and that's okay.
+    my $id     = shift;
+    my $page   = getPageTree("showteam?teamid=$id");
+    my %fields = ();
+
+    foreach my $data (
+        $page->look_down(
+            _tag  => "tr",
+            class => qr{^(firstRow|secondRow)}
+        )
+      )
+    {
+        my $k = $data->look_down( _tag => "th" )->as_text =~ s/://r;
+        my $v = $data->look_down( _tag => "td" )->as_text;
+        if ( $k == 'Reserve Contact' ) {
+            ## nest the reserve contact - key collision otherwise
+        }
+        if ( $k =~ /Club details/ ) { last }
+        my %tableHash = ( $k => $v );
+        $fields{$k} = $v;
+    }
+
+    return \%fields;
+}
+
 sub getClubIdByName {
     my $name      = shift;
     my $clubsData = fetchAllClubsAndIds();
     my $clubId    = $clubsData->{$name};
     return defined $clubId ? $clubId : 0;
+
+}
+
+sub getTeamIdByName {
+    my $name      = shift;
+    my $clubsData = fetchAllTeamsAndIds();
+    my $teamId    = $clubsData->{$name};
+    return defined $teamId ? $teamId : 0;
 
 }
 1;
