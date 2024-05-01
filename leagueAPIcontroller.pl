@@ -8,7 +8,7 @@ get '/api/clubslist' => sub ($c) {
 };
 
 # Returns general club info, address, general email, website, google map etc
-get '/api/club' => sub ($c) {
+get '/api/clubinfo' => sub ($c) {
     my $id   = $c->param('clubid');
     my $name = $c->param('clubname');
 
