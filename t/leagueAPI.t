@@ -38,9 +38,13 @@ $t->get_ok('/api/club?id=Moss Side')->status_is(200)
   ->json_has( '/Website',     'expecting a Website key' );
 ## /club?name=...
 $t->get_ok('/api/club?name=Bad Name')->status_is(404);
-## /teams?name
+## /teams?name=
 $t->get_ok('/api/teams?name=Bad Name')->status_is(404);
 $t->get_ok('/api/teams?name=Moss Side')->status_is(200)
+  ->json_has( '/Moss Side 1',
+    'expecting a first team from any club in league' );
+## /teams?id=
+$t->get_ok('/api/teams?id=145')->status_is(200)
   ->json_has( '/Moss Side 1',
     'expecting a first team from any club in league' );
 
