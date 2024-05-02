@@ -73,7 +73,14 @@ $t->get_ok('/api/teaminfo?teamid=468')->status_is(200)->json_has('/Mobile')
 ## /clubfixtures - respond with team or club fixtures dependant on query params given.
 $t->get_ok('/api/fixtures?teamid=468')->status_is(200)
   ->json_has('/fixtures/1/date')->json_has('/fixtures/1/venue')
-  ->json_has('/fixtures/1/opponent');
+  ->json_has('/fixtures/1/opponent')->json_has('/fixtures/1/team')
+  ->json_is( '/fixtures/1/team' => 'Moss Side 1' );
+$t->get_ok('/api/fixtures?teamname=Moss Side 1')->status_is(200)
+  ->json_has('/fixtures/1/date')->json_has('/fixtures/1/venue')
+  ->json_has('/fixtures/1/opponent')->json_has('/fixtures/1/team')
+  ->json_is( '/fixtures/1/team' => 'Moss Side 1' );
+
+$t->get_ok('/api/fixtures?clubid=145')->status_is(200);
 
 done_testing();
 

@@ -194,6 +194,9 @@ sub fetchFixturesByTeam {
     my $page     = getPageTree("showteamfixtures?teamid=$teamid");
     my @fixtures = ();
 
+    my $title_td = $page->look_down( _tag => 'td', class => 'title' );
+    my ($teamname) = $title_td->as_text =~ qr{(.*?):};
+
     foreach
       my $dataRow ( $page->look_down( _tag => "tr", class => qr{DoneRow} ) )
     {
@@ -204,6 +207,7 @@ sub fetchFixturesByTeam {
 
         push @fixtures,
           {
+            'team'     => $teamname,
             'date'     => $v[1],
             'venue'    => $v[2],
             'opponent' => $v[3]
@@ -211,6 +215,28 @@ sub fetchFixturesByTeam {
     }
 
     return { "fixtures" => \@fixtures };
+}
+
+sub fetchFixturesByClub {
+    my %params   = @_;
+    my $id       = $params{'clubid'};
+    my $clubname = $params{'clubname'} || getClubNameById( $params{'clubid'} );
+
+    my $teamslist = fetchAllTeamsAndIds();
+    my @clubsTeamIds;
+    my @fixtures;
+
+    foreach my $teamname ( keys %$teamslist ) {
+        if ( $teamname =~ /^$clubname\s+\d+$/ ) {
+            push @clubsTeamIds, $teamslist->{$teamname};
+        }
+    }
+
+    foreach my $teamid (@clubsTeamIds) {
+        push @fixtures, fetchFixturesByTeam($teamid);
+    }
+
+    return { 'fixtures' => \@fixtures };
 }
 
 sub getClubIdByName {
@@ -227,5 +253,12 @@ sub getTeamIdByName {
     my $teamId    = $clubsData->{$name};
     return defined $teamId ? $teamId : 0;
 
+}
+
+sub getClubNameById {
+    my $id         = shift;
+    my $clubsData  = fetchAllClubsAndIds();
+    my ($clubname) = grep { $clubsData->{$_} eq $id } keys %$clubsData;
+    return $clubname;
 }
 1;

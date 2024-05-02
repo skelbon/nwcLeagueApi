@@ -93,30 +93,39 @@ get '/api/teaminfo' => sub ($c) {
     $c->render( json => $teaminfo );
 };
 
+# Returns fixtures for a given team or all of a clubs teams if a clubid or clubname are passed in the query params
 get '/api/fixtures' => sub ($c) {
 
-    my $id   = $c->param('teamid');
-    my $name = $c->param('teamname');
+    my $clubid   = $c->param('clubid');
+    my $clubname = $c->param('clubname');
+
+    my $id   = $clubid   || $c->param('teamid');
+    my $name = $clubname || $c->param('teamname');
+
+    my $is_club = $clubid || $clubname ? 1 : 0;
 
     unless ( $id || $name ) {
         return $c->render(
             json =>
-'400 Bad Request: Missing query parameter teamname or teamid required',
+'400 Bad Request: Missing query parameter. One of teamid/teamname or clubid/clubname is required ',
             status => 400
         );
     }
 
     if ( $name && !$id ) {
-        $id = getTeamIdByName($name);
+        $id = $is_club ? getClubIdByName($name) : getTeamIdByName($name);
         unless ($id) {
             return $c->render(
-                json   => "404 Not found: Team $name not found",
+                json   => "404 Not found: $name not found",
                 status => 404
             );
         }
     }
 
-    my $fixtures = fetchFixturesByTeam($id);
+    my $fixtures =
+      $is_club
+      ? fetchFixturesByClub( clubid => $id, clubname => $clubname )
+      : fetchFixturesByTeam($id);
     $c->render( json => $fixtures );
 
 };
