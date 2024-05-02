@@ -207,6 +207,7 @@ sub fetchFixturesByTeam {
 
         push @fixtures,
           {
+            'teamid'   => $teamid,
             'team'     => $teamname,
             'date'     => $v[1],
             'venue'    => $v[2],
