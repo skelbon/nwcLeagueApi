@@ -214,7 +214,7 @@ sub fetchFixturesByTeam {
           };
     }
 
-    return { "fixtures" => \@fixtures };
+    return { $teamname => \@fixtures };
 }
 
 sub fetchFixturesByClub {
@@ -236,7 +236,7 @@ sub fetchFixturesByClub {
         push @fixtures, fetchFixturesByTeam($teamid);
     }
 
-    return { 'fixtures' => \@fixtures };
+    return { $clubname => \@fixtures };
 }
 
 sub getClubIdByName {
