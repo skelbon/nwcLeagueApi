@@ -1,0 +1,151 @@
+{
+  "GET /": {
+    "description": "Returns a description of endpoints"
+  },
+  "GET /clubslist": {
+    "description": "Returns a list of all the clubs playing in the league for the current season"
+  },
+  "exampleResponse": {
+    "3-1-5 Squash Club": "150",
+    "Alderley Edge": "1",
+    "Alsager": "2",
+    "Barnton CC": "5",
+    "Blackburn Northern": "6",
+    "Xaverian": "118",
+    "YMCA Thornton": "121"
+  },
+  "GET /clubinfo": {
+    "queries": ["clubid", "clubname"],
+    "description": "Returns general club info",
+    "exampleResponse": {
+      "Address": " ",
+      "Directions": "Follow signs for Manchester Rugby Club ",
+      "Email": " ",
+      "Fixture Sec": "Al Atkinson",
+      "Manager": " ",
+      "Map": "https://www.google.co.uk/maps/place/Grove+Park+Squash+Club/@53.3584435,-2.1948303,16.79z/data=!4m5!3m4!1s0x0:0x965ad3bdae25f66e!8m2!3d53.358389!4d-2.193424",
+      "Mobile": "07867948145",
+      "Phone": " ",
+      "Website": "www.groveparksquash.org.uk"
+    }
+  },
+  "GET /teams": {
+    "description": "Returns the teams and their division for a given club",
+    "queries": ["clubid", "clubname"],
+    "exampleResponse": {
+      "Moss Side 1": "Division 4 Central South",
+      "Moss Side 2": "Division 5 South East"
+    }
+  },
+  "GET /teamslist": {
+    "description": "Returns all the teams for all the clubs in the league",
+    "exampleResponse": {
+      "3-1-5 Squash Club 1": "486",
+      "Alderley Edge 2": "2",
+      "Alderley Edge 3": "3",
+      "Woolston 1": "318",
+      "Woolston 2": "319",
+      "Wrexham Brymbo 1": "322",
+      "Wrexham Brymbo 2": "323",
+      "Wrexham Brymbo 3": "518",
+      "Xaverian 1": "324",
+      "Xaverian 2": "325",
+      "Xaverian 3": "326",
+      "Xaverian 4": "399",
+      "YMCA Thornton 1": "330",
+      "YMCA Thornton 2": "331",
+      "YMCA Thornton 3": "419"
+    }
+  },
+  "GET /teaminfo": {
+    "description": "Returns general team info including contact details",
+    "queries": ["clubid", "clubname"],
+    "exampleResponse": {
+      "Email": "   ",
+      "Mobile": "   ",
+      "Phone": " 07777777777 ",
+      "Phone 2": "   ",
+      "Reserve Contact": {
+        "Club details": "Alderley Edge ",
+        "Email": "   ",
+        "Mobile": "   ",
+        "Phone": "   ",
+        "Phone 2": "   ",
+        "Reserve Contact": "   "
+      },
+      "Team Contact": " Paddy Rosser "
+    }
+  },
+  "GET /fixtures": {
+    "description": "Returns a list of all fixtures. If a clubname or clubid is given the response will be all the fixtures for the club. If a teamid or teamname is given only fixtures for that team will be in the response",
+    "queries": ["clubid", "clubname", "teamid", "teamname"],
+    "exampleResponse": {
+      "Moss Side": [
+        {
+          "Moss Side 1": [
+            {
+              "date": "Thu 23/11/23 19:30 ",
+              "opponent": "Bowdon 4",
+              "team": "Moss Side 1",
+              "teamid": "468",
+              "venue": "Home"
+            },
+            {
+              "date": "Thu 30/11/23 19:30 ",
+              "opponent": "Brooklands 3",
+              "team": "Moss Side 1",
+              "teamid": "468",
+              "venue": "Home"
+            },
+            {
+              "date": "Thu 07/12/23 19:30 ",
+              "opponent": "Brooklands 4",
+              "team": "Moss Side 1",
+              "teamid": "468",
+              "venue": "Home"
+            },
+            {
+              "date": "Thu 14/12/23 19:30 ",
+              "opponent": "Grove Park 5",
+              "team": "Moss Side 1",
+              "teamid": "468",
+              "venue": "Away"
+            }
+          ]
+        },
+        {
+          "Moss Side 2": [
+            {
+              "date": "Thu 28/03/24 19:30 ",
+              "opponent": "The Northern 9",
+              "team": "Moss Side 2",
+              "teamid": "469",
+              "venue": "Home"
+            },
+            {
+              "date": "Thu 11/04/24 19:30 ",
+              "opponent": "City of Manchester 7",
+              "team": "Moss Side 2",
+              "teamid": "469",
+              "venue": "Home"
+            },
+            {
+              "date": "Thu 18/04/24 19:30 ",
+              "opponent": "Cheetham Hill 6",
+              "team": "Moss Side 2",
+              "teamid": "469",
+              "venue": "Away"
+            },
+            {
+              "date": "Thu 25/04/24 19:30 ",
+              "opponent": "Monton 3",
+              "team": "Moss Side 2",
+              "teamid": "469",
+              "venue": "Home"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
