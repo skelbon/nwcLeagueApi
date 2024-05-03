@@ -130,5 +130,17 @@ get '/fixtures' => sub ($c) {
 
 };
 
+get '/' => sub {
+    my $c = shift;
+    
+    my $json_file = './endpoints.json';
+    
+    if (-e $json_file) {
+        $c->res->headers->content_type('application/json');
+        $c->reply->file($json_file);
+    } else {
+        $c->reply->not_found;
+    }
+};
 app->start;
 
