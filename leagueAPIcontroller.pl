@@ -2,13 +2,13 @@ use Mojolicious::Lite -signatures;
 require './leagueAPImodel.pl';
 
 # Returns a list of all clubs in the league
-get '/api/clubslist' => sub ($c) {
+get '/clubslist' => sub ($c) {
     my $clubs = fetchAllClubsAndIds();
     $c->render( json => $clubs );
 };
 
 # Returns general club info, address, general email, website, google map etc
-get '/api/clubinfo' => sub ($c) {
+get '/clubinfo' => sub ($c) {
     my $id   = $c->param('clubid');
     my $name = $c->param('clubname');
 
@@ -35,7 +35,7 @@ get '/api/clubinfo' => sub ($c) {
 };
 
 # Returns a list of teams for a given club id or name
-get '/api/teams' => sub ($c) {
+get '/teams' => sub ($c) {
     my $id   = $c->param('clubid');
     my $name = $c->param('clubname');
 
@@ -62,12 +62,12 @@ get '/api/teams' => sub ($c) {
 };
 
 # Returns a list of all teams in league
-get 'api/teamslist' => sub ($c) {
+get '/teamslist' => sub ($c) {
     my $teams = fetchAllTeamsAndIds();
     $c->render( json => $teams );
 };
 
-get '/api/teaminfo' => sub ($c) {
+get '/teaminfo' => sub ($c) {
     my $id   = $c->param('teamid');
     my $name = $c->param('teamname');
 
@@ -94,7 +94,7 @@ get '/api/teaminfo' => sub ($c) {
 };
 
 # Returns fixtures for a given team or all of a clubs teams if a clubid or clubname are passed in the query params
-get '/api/fixtures' => sub ($c) {
+get '/fixtures' => sub ($c) {
 
     my $clubid   = $c->param('clubid');
     my $clubname = $c->param('clubname');
